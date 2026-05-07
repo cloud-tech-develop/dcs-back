@@ -9,9 +9,19 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("No se encontró el archivo .env, usando variables de entorno")
+	}
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "9099"
+	}
+
 	cfg := config.Load()
 
 	store, err := image.NewStore(cfg.UploadDir, cfg.ThumbnailDir)
